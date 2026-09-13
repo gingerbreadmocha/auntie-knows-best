@@ -1,3 +1,5 @@
+import { ChatInput } from "./ChatInput";
+
 const Topbar = () => {
   return (
     <div className="w-full border-violet-200 flex flex-row">
@@ -19,6 +21,7 @@ export function Chatbox() {
   return (
     <div className="w-full max-w-4xl h-[80vh] border border-violet-200 rounded-xl shadow-lg p-6 flex flex-col justify-between items-center bg-orange-50">
       <Topbar />
+      <ChatInput />
     </div>
   );
 }
