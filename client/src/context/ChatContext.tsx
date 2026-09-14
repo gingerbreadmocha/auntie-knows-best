@@ -1,4 +1,10 @@
-import React, { createContext, useContext, useState, useEffect, type ReactNode } from "react";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  type ReactNode,
+} from "react";
 
 export type ChatMessage = {
   role: "user" | "model";
@@ -38,7 +44,10 @@ export function ChatProvider({ children }: { children: ReactNode }) {
   const sendMessage = async (userText: string) => {
     if (!userText.trim()) return;
 
-    const userMessage: ChatMessage = { role: "user", parts: [{ text: userText }] };
+    const userMessage: ChatMessage = {
+      role: "user",
+      parts: [{ text: userText }],
+    };
     const updatedHistory = [...history, userMessage];
 
     setHistory(updatedHistory);
@@ -56,7 +65,10 @@ export function ChatProvider({ children }: { children: ReactNode }) {
       }
 
       const data: { reply: string } = await response.json();
-      const modelMessage: ChatMessage = { role: "model", parts: [{ text: data.reply }] };
+      const modelMessage: ChatMessage = {
+        role: "model",
+        parts: [{ text: data.reply }],
+      };
 
       setHistory((prev) => [...prev, modelMessage]);
     } catch (err) {
