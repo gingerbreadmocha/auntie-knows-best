@@ -54,10 +54,13 @@ export function ChatProvider({ children }: { children: ReactNode }) {
     setIsLoading(true);
 
     try {
+      // Send only the last 20 msgs to save bandwidth
+      const recentHistory = history.slice(-20);
+
       const response = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: userText, history }),
+        body: JSON.stringify({ message: userText, recentHistory }),
       });
 
       if (!response.ok) {
