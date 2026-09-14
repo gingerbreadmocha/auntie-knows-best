@@ -1,4 +1,5 @@
 import { ChatInput } from "./ChatInput";
+import { useChat, type ChatMessage } from "../context/ChatContext";
 
 const Topbar = () => {
   return (
@@ -17,10 +18,49 @@ const Topbar = () => {
   );
 };
 
+const MessageBubble = ({ message }: { message: ChatMessage }) => {
+  const isUser = message.role === "user";
+  const text = message.parts.map((part) => part.text).join("\n");
+
+  return (
+    <div className={`w-full flex ${isUser ? "justify-end" : "justify-start"}`}>
+      {!isUser && (
+        <img
+          className="w-10 h-10 rounded-full mr-3 shrink-0"
+          src="auntie.png"
+          alt="Chinese auntie"
+        />
+      )}
+      <div
+        className={`max-w-[70%] px-4 py-2 rounded-2xl text-md whitespace-pre-wrap ${
+          isUser
+            ? "bg-violet-600 text-white rounded-br-md"
+            : "bg-white border border-violet-200 text-violet-900 rounded-bl-md"
+        }`}
+      >
+        {text}
+      </div>
+    </div>
+  );
+};
+
 export function Chatbox() {
+  const { history } = useChat();
+
   return (
     <div className="w-full max-w-4xl h-[80vh] border border-violet-200 rounded-xl shadow-lg p-6 flex flex-col justify-between items-center bg-orange-50">
       <Topbar />
+      <div className="w-full flex-1 overflow-y-auto flex flex-col gap-4 my-4 pr-2">
+        {history.length === 0 ? (
+          <p className="text-violet-700/70 text-center my-auto">
+            Say hi to Auntie to get started
+          </p>
+        ) : (
+          history.map((message, index) => (
+            <MessageBubble key={index} message={message} />
+          ))
+        )}
+      </div>
       <ChatInput />
     </div>
   );

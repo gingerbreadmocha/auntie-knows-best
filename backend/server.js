@@ -1,4 +1,5 @@
-import express from 'express';
+import 'dotenv/config';
+import express from "express";
 import { GoogleGenAI } from '@google/genai';
 
 const app = express();
@@ -28,7 +29,7 @@ app.post('/api/chat', async (req, res) => {
         const contents = history ? [...history, { role: 'user', parts: [{ text: message }] }] : message;
 
         const response = await ai.models.generateContent({
-            model: 'gemini-2.5-flash',
+            model: 'gemini-3.6-flash',
             contents: contents,
             config: {
                 systemInstruction: AUNTIE_SYSTEM_INSTRUCTION,
@@ -38,11 +39,11 @@ app.post('/api/chat', async (req, res) => {
 
         res.json({ reply: response.text });
     } catch (err) {
-        console.log('Error generating AI response: ', error);
+        console.log('Error generating AI response: ', err);
         res.status(500).json({ error: 'Failed to generate response' });
     }
 })
 
 app.listen(PORT, () => {
-    console.log(`Server is running at http://localhost:${PORT}`);
+    console.log(`Server is running on port: ${PORT}`);
 });
