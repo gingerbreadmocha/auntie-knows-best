@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import { ChatInput } from "./ChatInput";
 import { useChat, type ChatMessage } from "../context/ChatContext";
 
@@ -66,11 +67,23 @@ const TypingIndicator = () => {
 
 export function Chatbox() {
   const { history, isLoading } = useChat();
+  const messagesEndRef = useRef<HTMLDivElement | null>(null);
+
+  // Scroll to the bottom of the chatbox after every msg
+  useEffect(() => {
+    const container = messagesEndRef.current;
+    if (container) {
+      container.scrollTop = container.scrollHeight;
+    }
+  }, [history, isLoading]);
 
   return (
     <div className="w-full max-w-4xl h-[80vh] border border-violet-200 rounded-xl shadow-lg p-6 flex flex-col justify-between items-center bg-orange-50">
       <Topbar />
-      <div className="w-full flex-1 overflow-y-auto flex flex-col gap-4 my-4 pr-2">
+      <div
+        ref={messagesEndRef}
+        className="w-full flex-1 overflow-y-auto flex flex-col gap-4 my-4 pr-2"
+      >
         {history.length === 0 && !isLoading ? (
           <p className="text-violet-700/70 text-center my-auto">
             Say hi to Auntie to get started
