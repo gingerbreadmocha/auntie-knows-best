@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useChat } from "../context/ChatContext";
 
-export function ChatInput() {
+export function ChatInput({ disabled }: { disabled: boolean }) {
   const [textInput, saveTextInput] = useState("");
   const { sendMessage, isLoading } = useChat();
 
@@ -27,7 +27,7 @@ export function ChatInput() {
       />
       <button
         type="button"
-        disabled={isLoading}
+        disabled={isLoading || disabled}
         className="ml-2 bg-violet-600 hover:bg-violet-700 text-white rounded-full p-2 flex items-center justify-center transition-colors mr-4 disabled:opacity-50 disabled:cursor-not-allowed"
         aria-label="Send message"
         onClick={handleSend}

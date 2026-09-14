@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import { ChatInput } from "./ChatInput";
 import { useChat, type ChatMessage } from "../context/ChatContext";
+import { useGetHeartbeat } from "../hooks/useGetHeartbeat";
 
 const Topbar = () => {
   const { clearChat, history } = useChat();
@@ -92,6 +93,7 @@ const TypingIndicator = () => {
 
 export function Chatbox() {
   const { history, isLoading } = useChat();
+  const { ready } = useGetHeartbeat();
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
   // Scroll to the bottom of the chatbox after every msg
@@ -109,20 +111,26 @@ export function Chatbox() {
         ref={messagesEndRef}
         className="w-full flex-1 overflow-y-auto flex flex-col gap-4 my-4 pr-2"
       >
-        {history.length === 0 && !isLoading ? (
-          <p className="text-violet-700/70 text-center my-auto">
-            Say hi to Auntie to get started
-          </p>
+        {ready ? (
+          history.length === 0 && !isLoading ? (
+            <p className="text-violet-700/70 text-center my-auto">
+              Say hi to Auntie to get started
+            </p>
+          ) : (
+            <>
+              {history.map((message, index) => (
+                <MessageBubble key={index} message={message} />
+              ))}
+              {isLoading && <TypingIndicator />}
+            </>
+          )
         ) : (
-          <>
-            {history.map((message, index) => (
-              <MessageBubble key={index} message={message} />
-            ))}
-            {isLoading && <TypingIndicator />}
-          </>
+          <p className="text-violet-700/70 text-center my-auto">
+            Auntie is coming from the kitchen... please wait a sec.
+          </p>
         )}
       </div>
-      <ChatInput />
+      <ChatInput disabled={!ready} />
     </div>
   );
 }
