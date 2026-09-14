@@ -6,6 +6,8 @@ Chinese Auntie AI is a full-stack web app that channels the energy of a traditio
 
 This project was inspired by my mom, who has spent the entire year lecturing me every time we talk on the phone. So I solved the problem the only reasonable way: I built an AI to lecture me for her. 🎎
 
+Deployed here: https://chinese-auntie.netlify.app/
+
 ## ✨ Features
 
 - **Authentic auntie energy** — The chatbot speaks with a custom system prompt that makes Gemini act like a traditional Chinese auntie: dramatic, blunt, a bit naggy, and deeply caring.
