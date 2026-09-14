@@ -1,6 +1,6 @@
 export function Sidebar() {
   return (
-    <aside className="h-screen w-80 shrink-0 bg-violet-300 flex flex-col p-8">
+    <aside className="hidden md:flex h-screen w-80 shrink-0 bg-violet-300 flex-col p-8">
       <h1 className="text-3xl text-violet-900">Chinese Auntie AI</h1>
 
       <p className="mt-4 text-lg text-violet-900 leading-relaxed">

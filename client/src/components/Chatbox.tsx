@@ -9,14 +9,14 @@ const Topbar = () => {
   return (
     <div className="w-full border-violet-200 flex flex-row items-center gap-4">
       <img
-        className="w-20 h-20 rounded-full shrink-0"
+        className="w-14 h-14 md:w-20 md:h-20 rounded-full shrink-0"
         src="auntie.png"
         alt="Rounded avatar"
       />
       <div className="flex flex-col border-b border-violet-200 flex-1">
-        <h2 className="text-3xl text-violet-900">Chinese auntie</h2>
+        <h2 className="text-2xl sm:text-3xl text-violet-900">Chinese auntie</h2>
 
-        <p className="text-lg text-violet-900">Here to keep you on track!</p>
+        <p className="text-md sm:text-lg text-violet-900">Here to keep you on track!</p>
       </div>
       <button
         type="button"
@@ -39,7 +39,7 @@ const Topbar = () => {
           <polyline points="1 20 1 14 7 14" />
           <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15" />
         </svg>
-        <span>Refresh</span>
+        <span className="hidden sm:inline">Refresh</span>
       </button>
     </div>
   );
@@ -105,7 +105,7 @@ export function Chatbox() {
   }, [history, isLoading]);
 
   return (
-    <div className="w-full max-w-4xl h-[80vh] border border-violet-200 rounded-xl shadow-lg p-6 flex flex-col justify-between items-center bg-orange-50">
+    <div className="w-full max-w-4xl h-[100dvh] md:h-[80vh] border-0 md:border border-violet-200 rounded-none md:rounded-xl shadow-none md:shadow-lg p-4 md:p-6 flex flex-col justify-between items-center bg-orange-50">
       <Topbar />
       <div
         ref={messagesEndRef}
