@@ -99,7 +99,7 @@ npm install
 The client's `vite.config.js` proxies `/api` requests to the backend (default `http://localhost:3000`). To point it elsewhere, add a `.env` in `client/`:
 
 ```env
-API_PROXY_TARGET=http://localhost:3000   # optional
+API_PROXY_TARGET=http://localhost:3000   # optional, dev/preview only
 ```
 
 Start the frontend:
@@ -109,6 +109,16 @@ npm run dev
 ```
 
 Open [http://localhost:5173](http://localhost:5173) and say hi to Auntie to get started! 🎉
+
+### Production deployment
+
+The Vite proxy is **dev/preview-only** — a production build (`vite build`) is static files with no proxy. If the frontend and backend are hosted separately, set `VITE_API_BASE_URL` in `client/.env` (or your build environment) to the backend's public origin **before building**; it gets baked into the bundle at build time:
+
+```env
+VITE_API_BASE_URL=https://your-backend-host.example.com
+```
+
+Leave it unset if the backend serves the built `client/dist` files itself (same origin), since requests then stay relative.
 
 ## 📡 API Reference
 
