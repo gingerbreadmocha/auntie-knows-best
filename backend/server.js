@@ -1,9 +1,31 @@
 import 'dotenv/config';
 import express from "express";
+import cors from "cors";
 import { GoogleGenAI } from '@google/genai';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+// In dev, Vite's proxy (/api -> API_PROXY_TARGET) makes browser requests
+// same-origin, so CORS rarely matters there. In prod the browser calls the
+// backend directly from the static frontend origin, so the API must answer
+// with Access-Control-Allow-* headers (including for the JSON preflight).
+// The API is public (no cookies/auth), so allow any origin by default and
+// restrict with CORS_ORIGIN (comma-separated) if desired.
+// Note: "*" must be passed as a string — inside an array it's treated as a
+// literal origin by the cors package and the header gets dropped.
+const allowedOrigins = (process.env.CORS_ORIGIN ?? "*")
+    .split(",")
+    .map((origin) => origin.trim())
+    .filter(Boolean);
+
+app.use(cors({
+    origin: allowedOrigins.length === 1 && allowedOrigins[0] === "*"
+        ? "*"
+        : allowedOrigins,
+    methods: ["GET", "POST", "OPTIONS"],
+    allowedHeaders: ["Content-Type"],
+}));
 
 app.use(express.json());
 

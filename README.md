@@ -112,13 +112,21 @@ Open [http://localhost:5173](http://localhost:5173) and say hi to Auntie to get 
 
 ### Production deployment
 
-The Vite proxy is **dev/preview-only** — a production build (`vite build`) is static files with no proxy. If the frontend and backend are hosted separately, set `VITE_API_BASE_URL` in `client/.env` (or your build environment) to the backend's public origin **before building**; it gets baked into the bundle at build time:
+The Vite proxy is **dev/preview-only** — a production build (`vite build`) is static files with no proxy. If the frontend and backend are hosted separately, set `VITE_API_BASE_URL` in `client/.env` (or your build environment) to the backend's **real** public origin **before building**; it gets baked into the bundle at build time:
 
 ```env
 VITE_API_BASE_URL=https://your-backend-host.example.com
 ```
 
+Don't commit/publish builds made with the `https://api.example.com` placeholder — those point at a domain that isn't yours.
+
 Leave it unset if the backend serves the built `client/dist` files itself (same origin), since requests then stay relative.
+
+**CORS:** because the browser calls the backend directly from the frontend origin, the backend must answer with `Access-Control-Allow-*` headers. `backend/server.js` uses the [`cors`](https://www.npmjs.com/package/cors) middleware, which is enabled by default for any origin and answers the JSON preflight automatically. To lock it down to specific frontend origins, set `CORS_ORIGIN` in `backend/.env`:
+
+```env
+CORS_ORIGIN=https://your-frontend-host.example.com,https://staging.example.com
+```
 
 ## 📡 API Reference
 

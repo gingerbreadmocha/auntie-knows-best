@@ -12,7 +12,12 @@ import React, {
 // - Prod: set VITE_API_BASE_URL to the backend origin (e.g.
 //   https://your-backend-host) so requests don't go to the static frontend
 //   host. Vite's server.proxy is dev-only and is NOT baked into the build.
-const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL ?? "").replace(/\/+$/, "");
+const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL ?? "").replace(
+  /\/+$/,
+  "",
+);
+
+console.log("api base", API_BASE_URL);
 
 export type ChatMessage = {
   role: "user" | "model";
@@ -68,7 +73,7 @@ export function ChatProvider({ children }: { children: ReactNode }) {
       const response = await fetch(`${API_BASE_URL}/api/chat`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: userText, recentHistory }),
+        body: JSON.stringify({ message: userText, history: recentHistory }),
       });
 
       if (!response.ok) {
