@@ -3,18 +3,43 @@ import { ChatInput } from "./ChatInput";
 import { useChat, type ChatMessage } from "../context/ChatContext";
 
 const Topbar = () => {
+  const { clearChat, history } = useChat();
+
   return (
-    <div className="w-full border-violet-200 flex flex-row">
+    <div className="w-full border-violet-200 flex flex-row items-center gap-4">
       <img
-        className="w-20 h-20 rounded-full mr-8"
+        className="w-20 h-20 rounded-full shrink-0"
         src="auntie.png"
         alt="Rounded avatar"
       />
-      <div className="flex flex-col border-b border-violet-200 w-full">
+      <div className="flex flex-col border-b border-violet-200 flex-1">
         <h2 className="text-3xl text-violet-900">Chinese auntie</h2>
 
         <p className="text-lg text-violet-900">Here to keep you on track!</p>
       </div>
+      <button
+        type="button"
+        onClick={clearChat}
+        disabled={history.length === 0}
+        aria-label="Refresh chat"
+        title="Refresh chat"
+        className="shrink-0 px-3 py-2 rounded-full bg-violet-600 hover:bg-violet-700 text-white text-md flex items-center gap-1.5 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+      >
+        <svg
+          className="w-4 h-4"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          viewBox="0 0 24 24"
+        >
+          <polyline points="23 4 23 10 17 10" />
+          <polyline points="1 20 1 14 7 14" />
+          <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15" />
+        </svg>
+        <span>Refresh</span>
+      </button>
     </div>
   );
 };
