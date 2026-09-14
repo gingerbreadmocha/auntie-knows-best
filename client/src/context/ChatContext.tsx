@@ -6,18 +6,10 @@ import React, {
   type ReactNode,
 } from "react";
 
-// Resolve where the backend API lives.
-// - Dev: leave VITE_API_BASE_URL unset — Vite's server/preview proxy forwards
-//   /api to API_PROXY_TARGET (see vite.config.js).
-// - Prod: set VITE_API_BASE_URL to the backend origin (e.g.
-//   https://your-backend-host) so requests don't go to the static frontend
-//   host. Vite's server.proxy is dev-only and is NOT baked into the build.
 const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL ?? "").replace(
   /\/+$/,
   "",
 );
-
-console.log("api base", API_BASE_URL);
 
 export type ChatMessage = {
   role: "user" | "model";

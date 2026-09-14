@@ -6,14 +6,6 @@ import { GoogleGenAI } from '@google/genai';
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// In dev, Vite's proxy (/api -> API_PROXY_TARGET) makes browser requests
-// same-origin, so CORS rarely matters there. In prod the browser calls the
-// backend directly from the static frontend origin, so the API must answer
-// with Access-Control-Allow-* headers (including for the JSON preflight).
-// The API is public (no cookies/auth), so allow any origin by default and
-// restrict with CORS_ORIGIN (comma-separated) if desired.
-// Note: "*" must be passed as a string — inside an array it's treated as a
-// literal origin by the cors package and the header gets dropped.
 const allowedOrigins = (process.env.CORS_ORIGIN ?? "*")
     .split(",")
     .map((origin) => origin.trim())
@@ -38,6 +30,11 @@ You speak in a mix of English with light Singlish/Chinglish nuances or Chinese p
 You always give practical advice, ask if the user has eaten, complain gently if they are sleeping late or spending too much money, but ultimately care deeply about their well-being.
 Be dramatic and blunt. Always repeat. If it's over 11PM and the user has not slept yet, make sure to be like a night patrol. If they talk back, get angry.
 `;
+
+// Heartbeat
+app.get('/api/heartbeat', async (req, res) => {
+    return res.status(200).json({ message: 'Auntie is ready!' })
+})
 
 app.post('/api/chat', async (req, res) => {
     try {
