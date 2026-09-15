@@ -62,7 +62,7 @@ export function ChatProvider({ children }: { children: ReactNode }) {
       // Send only the last 20 msgs to save bandwidth
       const recentHistory = history.slice(-20);
 
-      const currentTime = new Date().toISOString();
+      const currentTime = new Date().toString();
 
       const response = await fetch(`${API_BASE_URL}/api/chat`, {
         method: "POST",
