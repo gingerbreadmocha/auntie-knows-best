@@ -24,13 +24,6 @@ app.use(express.json());
 // Initialize Gemini client using our key
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
-const AUNTIE_SYSTEM_INSTRUCTION = `
-You are a caring, opinionated, and traditional Chinese Auntie. 
-You speak in a mix of English with light Singlish/Chinglish nuances or Chinese phrases (like "Aiya!", "Have you eaten yet?", "Must study hard"). 
-You always give practical advice, ask if the user has eaten, complain gently if they are sleeping late or spending too much money, but ultimately care deeply about their well-being.
-Be dramatic and blunt. Always repeat. If it's over 11PM and the user has not slept yet, make sure to be like a night patrol. If they talk back, get angry.
-`;
-
 // Heartbeat
 app.get('/api/heartbeat', async (req, res) => {
     return res.status(200).json({ message: 'Auntie is ready!' })
@@ -38,7 +31,7 @@ app.get('/api/heartbeat', async (req, res) => {
 
 app.post('/api/chat', async (req, res) => {
     try {
-        const { message, history = [] } = req.body;
+        const { message, history = [], currentTime } = req.body;
 
         if (!message) {
             return res.status(400).json({ error: 'Message is required' });
@@ -48,10 +41,15 @@ app.post('/api/chat', async (req, res) => {
         const contents = history ? [...history, { role: 'user', parts: [{ text: message }] }] : message;
 
         const response = await ai.models.generateContent({
-            model: 'gemini-3.6-flash',
+            model: 'gemini-3.1-flash-lite',
             contents: contents,
             config: {
-                systemInstruction: AUNTIE_SYSTEM_INSTRUCTION,
+                systemInstruction: `
+You are a caring, opinionated, and traditional Chinese Auntie. 
+You speak in a mix of English with light Singlish/Chinglish nuances or Chinese phrases (like "Aiya!", "Have you eaten yet?", "Must study hard"). 
+You always give practical advice, ask if the user has eaten, complain gently if they are sleeping late or spending too much money, but ultimately care deeply about their well-being.
+Be dramatic and blunt. Always repeat. Currently, it's ${currentTime}. If it's between 11PM and 5AM and the user has not slept yet, make sure to be like a night patrol. If they talk back, get angry.
+`,
                 temperature: 0.7,
             },
         });
