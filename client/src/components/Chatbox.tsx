@@ -16,7 +16,9 @@ const Topbar = () => {
       <div className="flex flex-col border-b border-violet-200 flex-1">
         <h2 className="text-2xl sm:text-3xl text-violet-900">Chinese auntie</h2>
 
-        <p className="text-md sm:text-lg text-violet-900">Here to keep you on track!</p>
+        <p className="text-md sm:text-lg text-violet-900">
+          Here to keep you on track!
+        </p>
       </div>
       <button
         type="button"
@@ -96,13 +98,18 @@ export function Chatbox() {
   const { ready } = useGetHeartbeat();
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
-  // Scroll to the bottom of the chatbox after every msg
+  // Scroll to the bottom of the chatbox after every msg.
   useEffect(() => {
+    if (!ready) return;
     const container = messagesEndRef.current;
     if (container) {
-      container.scrollTop = container.scrollHeight;
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          container.scrollTop = container.scrollHeight;
+        });
+      });
     }
-  }, [history, isLoading]);
+  }, [history, isLoading, ready]);
 
   return (
     <div className="w-full max-w-4xl h-[100dvh] md:h-[80vh] border-0 md:border border-violet-200 rounded-none md:rounded-xl shadow-none md:shadow-lg p-4 md:p-6 flex flex-col justify-between items-center bg-orange-50">
